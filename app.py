@@ -908,31 +908,40 @@ def render_prediction(active_model):
             st.plotly_chart(fig, use_container_width=True)
 
         with r2_col:
-            st.markdown("""
-            <div class="premium-card">
-                <h4 style="color:#1E3A8A; margin-top:0;">AI Insights</h4>
-                <hr>
-            """, unsafe_allow_html=True)
-            st.write("**Prediction Confidence:**")
-            st.write(f"The model is **{conf}%** confident in this prediction based on historical data patterns.")
-
-            st.write("**Material Composition Analysis:**")
             ratio = cement / max(water, 1)
-            st.write(f"Your Cement-to-Water ratio is **{ratio:.2f}**.")
             if ratio > 1.8:
-                st.write("*Good:* High cement content relative to water typically supports higher strength.")
+                ratio_text = "<em>Good:</em> High cement content relative to water typically supports higher strength."
             else:
-                st.write("*Warning:* Low ratio. Excess water can reduce concrete strength.")
+                ratio_text = "<em>Warning:</em> Low ratio. Excess water can reduce concrete strength."
 
-            st.write("**Engineering Recommendation:**")
             if pred >= 60:
                 recommendation = "Excellent strength. Suitable for high-rise buildings and heavy load-bearing structures."
             elif pred >= 40:
                 recommendation = "Good strength. Suitable for standard residential and commercial construction."
             else:
                 recommendation = "Moderate to low strength. Consider reducing water content or increasing cement/curing age."
-            st.write(recommendation)
-            st.markdown('</div>', unsafe_allow_html=True)
+
+            st.markdown(f"""
+            <div class="premium-card">
+                <h4 style="color:#1E3A8A; margin-top:0;">AI Insights</h4>
+                <hr style="border:0; border-top:1px solid #E2E8F0; margin:10px 0 15px 0;">
+                
+                <div style="margin-bottom:15px;">
+                    <strong style="color:var(--text-primary); font-size:0.95rem;">Prediction Confidence:</strong><br>
+                    <span style="color:var(--text-secondary); font-size:0.9rem;">The model is <strong>{conf}%</strong> confident in this prediction based on historical data patterns.</span>
+                </div>
+                
+                <div style="margin-bottom:15px;">
+                    <strong style="color:var(--text-primary); font-size:0.95rem;">Material Composition Analysis:</strong><br>
+                    <span style="color:var(--text-secondary); font-size:0.9rem;">Your Cement-to-Water ratio is <strong>{ratio:.2f}</strong>.<br>{ratio_text}</span>
+                </div>
+                
+                <div>
+                    <strong style="color:var(--text-primary); font-size:0.95rem;">Engineering Recommendation:</strong><br>
+                    <span style="color:var(--text-secondary); font-size:0.9rem;">{recommendation}</span>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
 
         st.markdown("<br>", unsafe_allow_html=True)
         st.markdown('<div class="section-header">Export Section</div>', unsafe_allow_html=True)
